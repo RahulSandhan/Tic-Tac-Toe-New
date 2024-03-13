@@ -95,7 +95,7 @@ public class TicTacToe {
             System.out.println(winningPlayer.getName() + " has won with symbol " + winningPlayer.getSymbol().getSymbol());
         }
         else{
-            System.out.println("This game has drawn");
+            System.out.println("This game has drawn");x
         }
         gameController.printBoard(game);
 
