@@ -1,0 +1,131 @@
+<html>
+<head>
+<title>Game.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Game.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">machine_coding_tictactoe</span><span class="s2">.</span><span class="s1">models</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">machine_coding_tictactoe</span><span class="s2">.</span><span class="s1">exceptions</span><span class="s2">.</span><span class="s1">BotCountExceededException</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">ArrayList</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">Game </span><span class="s2">{</span>
+    <span class="s0">private </span><span class="s1">Board board</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Player</span><span class="s2">&gt; </span><span class="s1">players</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">GameStatus gameStatus</span><span class="s2">;</span>
+    <span class="s0">private int </span><span class="s1">currentPlayerIdx</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Move</span><span class="s2">&gt; </span><span class="s1">moves</span><span class="s2">;</span>
+
+    <span class="s0">private </span><span class="s1">Game</span><span class="s2">(</span><span class="s1">Board board</span><span class="s2">, </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Player</span><span class="s2">&gt; </span><span class="s1">players</span><span class="s2">, </span><span class="s1">GameStatus gameStatus</span><span class="s2">, </span><span class="s0">int </span><span class="s1">currentPlayerIdx</span><span class="s2">, </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Move</span><span class="s2">&gt; </span><span class="s1">moves</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">board </span><span class="s2">= </span><span class="s1">board</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">players </span><span class="s2">= </span><span class="s1">players</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">gameStatus </span><span class="s2">= </span><span class="s1">gameStatus</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">currentPlayerIdx </span><span class="s2">= </span><span class="s1">currentPlayerIdx</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">moves </span><span class="s2">= </span><span class="s1">moves</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public static </span><span class="s1">GameBuilder getBuilder</span><span class="s2">(){</span>
+        <span class="s0">return new </span><span class="s1">GameBuilder</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">Board getBoard</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">board</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Player</span><span class="s2">&gt; </span><span class="s1">getPlayers</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">players</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">GameStatus getGameStatus</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">gameStatus</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public int </span><span class="s1">getCurrentPlayerIdx</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">currentPlayerIdx</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Move</span><span class="s2">&gt; </span><span class="s1">getMoves</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">moves</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">printBoard</span><span class="s2">(){</span>
+           <span class="s0">this</span><span class="s2">.</span><span class="s1">board</span><span class="s2">.</span><span class="s1">printBoard</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public void </span><span class="s1">makeMove</span><span class="s2">(){</span>
+        <span class="s1">Player player </span><span class="s2">= </span><span class="s0">this</span><span class="s2">.</span><span class="s1">players</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">currentPlayerIdx</span><span class="s2">);</span>
+        <span class="s1">Pair</span><span class="s2">&lt;</span><span class="s1">Integer</span><span class="s2">, </span><span class="s1">Integer</span><span class="s2">&gt;  </span><span class="s1">rowCol </span><span class="s2">= </span><span class="s1">player</span><span class="s2">.</span><span class="s1">makeMove</span><span class="s2">();</span>
+        <span class="s0">while</span><span class="s2">(!</span><span class="s0">this</span><span class="s2">.</span><span class="s1">board</span><span class="s2">.</span><span class="s1">checkIfCellIsUnoccupied</span><span class="s2">(</span><span class="s1">rowCol</span><span class="s2">.</span><span class="s1">getKey</span><span class="s2">(), </span><span class="s1">rowCol</span><span class="s2">.</span><span class="s1">getValue</span><span class="s2">())){</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">player </span><span class="s0">instanceof </span><span class="s1">HumanPlayer</span><span class="s2">) {</span>
+                <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">((</span><span class="s3">&quot;Please make a move on a different cell&quot;</span><span class="s2">));</span>
+            <span class="s2">}</span>
+            <span class="s1">rowCol</span><span class="s2">=</span><span class="s1">player</span><span class="s2">.</span><span class="s1">makeMove</span><span class="s2">();</span>
+        <span class="s2">}</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">board</span><span class="s2">.</span><span class="s1">setPlayer</span><span class="s2">(</span><span class="s1">rowCol</span><span class="s2">.</span><span class="s1">getKey</span><span class="s2">(), </span><span class="s1">rowCol</span><span class="s2">.</span><span class="s1">getValue</span><span class="s2">(),</span><span class="s1">player</span><span class="s2">);</span>
+        <span class="s1">Cell cell </span><span class="s2">= </span><span class="s0">this</span><span class="s2">.</span><span class="s1">board</span><span class="s2">.</span><span class="s1">getCell</span><span class="s2">(</span><span class="s1">rowCol</span><span class="s2">.</span><span class="s1">getKey</span><span class="s2">(), </span><span class="s1">rowCol</span><span class="s2">.</span><span class="s1">getValue</span><span class="s2">());</span>
+        <span class="s1">Move move</span><span class="s2">=</span><span class="s0">new </span><span class="s1">Move</span><span class="s2">(</span><span class="s1">player</span><span class="s2">, </span><span class="s1">cell</span><span class="s2">);</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">moves</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">move</span><span class="s2">);</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">checkForWin</span><span class="s2">()){</span>
+            <span class="s0">this</span><span class="s2">.</span><span class="s1">gameStatus </span><span class="s2">= </span><span class="s1">GameStatus</span><span class="s2">.</span><span class="s1">ENDED</span><span class="s2">;</span>
+            <span class="s0">return</span><span class="s2">;</span>
+        <span class="s2">} </span><span class="s0">else if</span><span class="s2">(</span><span class="s1">checkForDraw</span><span class="s2">()){</span>
+            <span class="s0">this</span><span class="s2">.</span><span class="s1">gameStatus </span><span class="s2">= </span><span class="s1">GameStatus</span><span class="s2">.</span><span class="s1">DRAWN</span><span class="s2">;</span>
+            <span class="s0">return</span><span class="s2">;</span>
+        <span class="s2">}</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">currentPlayerIdx </span><span class="s2">= (</span><span class="s0">this</span><span class="s2">. </span><span class="s1">currentPlayerIdx </span><span class="s2">+ </span><span class="s4">1</span><span class="s2">) % (</span><span class="s0">this</span><span class="s2">.</span><span class="s1">board</span><span class="s2">.</span><span class="s1">getSize</span><span class="s2">() - </span><span class="s4">1</span><span class="s2">) ;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private boolean </span><span class="s1">checkForWin</span><span class="s2">() {</span>
+        <span class="s0">return false</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private boolean </span><span class="s1">checkForDraw</span><span class="s2">(){</span>
+       <span class="s0">int </span><span class="s1">n </span><span class="s2">= </span><span class="s0">this</span><span class="s2">.</span><span class="s1">board</span><span class="s2">.</span><span class="s1">getSize</span><span class="s2">();</span>
+       <span class="s0">return </span><span class="s1">n </span><span class="s2">* </span><span class="s1">n </span><span class="s2">= </span><span class="s0">this</span><span class="s2">.</span><span class="s1">moves</span><span class="s2">.</span><span class="s1">size</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public static class </span><span class="s1">GameBuilder</span><span class="s2">{</span>
+        <span class="s0">private </span><span class="s1">Board board</span><span class="s2">;</span>
+        <span class="s0">private </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Player</span><span class="s2">&gt; </span><span class="s1">players</span><span class="s2">;</span>
+        <span class="s0">private </span><span class="s1">GameStatus gameStatus</span><span class="s2">;</span>
+        <span class="s0">private int </span><span class="s1">currentPlayerIdx</span><span class="s2">;</span>
+        <span class="s0">private </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Move</span><span class="s2">&gt; </span><span class="s1">moves</span><span class="s2">;</span>
+
+        <span class="s0">public </span><span class="s1">GameBuilder setPlayer</span><span class="s2">(</span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Player</span><span class="s2">&gt; </span><span class="s1">players</span><span class="s2">){</span>
+            <span class="s0">this</span><span class="s2">.</span><span class="s1">players</span><span class="s2">=</span><span class="s1">players</span><span class="s2">;</span>
+            <span class="s0">int </span><span class="s1">n</span><span class="s2">=</span><span class="s1">players</span><span class="s2">.</span><span class="s1">size</span><span class="s2">();</span>
+            <span class="s0">this</span><span class="s2">.</span><span class="s1">board</span><span class="s2">=</span><span class="s0">new </span><span class="s1">Board</span><span class="s2">(</span><span class="s1">n</span><span class="s2">+</span><span class="s4">1</span><span class="s2">);</span>
+            <span class="s0">return this</span><span class="s2">;</span>
+        <span class="s2">}</span>
+        <span class="s0">public </span><span class="s1">Game build</span><span class="s2">() </span><span class="s0">throws </span><span class="s1">BotCountExceededException</span><span class="s2">{</span>
+            <span class="s0">int </span><span class="s1">botCount</span><span class="s2">=</span><span class="s4">0</span><span class="s2">;</span>
+            <span class="s0">for</span><span class="s2">(</span><span class="s1">Player p</span><span class="s2">:</span><span class="s1">players</span><span class="s2">){</span>
+                <span class="s0">if</span><span class="s2">(</span><span class="s1">p </span><span class="s0">instanceof </span><span class="s1">BotPlayer</span><span class="s2">){</span>
+                    <span class="s1">botCount</span><span class="s2">++;</span>
+                <span class="s2">}</span>
+                <span class="s0">if</span><span class="s2">(</span><span class="s1">botCount</span><span class="s2">&gt;</span><span class="s4">1</span><span class="s2">){</span>
+                    <span class="s0">throw new </span><span class="s1">BotCountExceededException</span><span class="s2">(</span><span class="s3">&quot;Found more than 1 bot, maximum only 1 bot is allowed&quot;</span><span class="s2">);</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+            <span class="s0">return new </span><span class="s1">Game</span><span class="s2">(</span><span class="s0">this</span><span class="s2">.</span><span class="s1">board</span><span class="s2">,</span><span class="s0">this</span><span class="s2">.</span><span class="s1">players</span><span class="s2">,</span><span class="s1">GameStatus</span><span class="s2">.</span><span class="s1">IN_PROGRESS</span><span class="s2">,</span><span class="s4">0</span><span class="s2">,</span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;());</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

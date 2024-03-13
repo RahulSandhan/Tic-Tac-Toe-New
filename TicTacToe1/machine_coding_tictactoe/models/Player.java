@@ -1,0 +1,31 @@
+package machine_coding_tictactoe.models;
+
+import javax.swing.*;
+
+public abstract class Player {
+    private String name;
+    private Symbol symbol;
+
+    public Player(String name, Symbol s) {
+        this.name = name;
+        this.symbol = s;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Symbol getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(Symbol s) {
+        this.symbol = s;
+    }
+
+    public abstract Pair<Integer, Integer> makeMove(Board board);
+}
