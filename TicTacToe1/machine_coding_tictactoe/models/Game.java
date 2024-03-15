@@ -86,9 +86,13 @@ public class Game {
     }
 
     public void undo(){
-        int prevPlayerIdx = currentPlayerIdx -1;
-        if(prevPlayerIdx < 0) prevPlayerIdx = players.size() - 1;
-        Player player = this.players.get(prevPlayerIdx);
+        int prevPlayerIdx = -1;
+        if(gameStatus.equals(GameStatus.ENDED) || gameStatus.equals(GameStatus.DRAWN))
+            prevPlayerIdx = this.currentPlayerIdx;
+        else prevPlayerIdx = this.currentPlayerIdx -1;
+        if(prevPlayerIdx < 0) prevPlayerIdx += players.size();
+
+        Player player = players.get(prevPlayerIdx);
         if(player instanceof HumanPlayer){
             Scanner scanner = new Scanner(System.in);
             HumanPlayer humanPlayer = (HumanPlayer) player; // Typecast it to HumanPlayer
@@ -104,7 +108,11 @@ public class Game {
                    System.out.println("We have successfully undoed player: " + player.getName() +"'s last move");
                    humanPlayer.decrementUndoCount();
                    if(humanPlayer.getPendingUndoCount() == 0){
-                       System.out.println("This was your last undo, no more undo attempts left");
+                       System.out.println("This was your last undo, no more undo attempts left for "+ player.getName());
+                   }
+
+                   if(gameStatus.equals(GameStatus.ENDED) || gameStatus.equals(GameStatus.DRAWN)){
+                       gameStatus = GameStatus.IN_PROGRESS;
                    }
                 }
             }
